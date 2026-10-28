@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/db.js";
 import { ApiError } from "../errors/apiErrors.js";
-import { products } from "../models/product.model.js";
+import { products } from "../db/schema.js";
 
 export const createProduct = async (req, res, next) => {
   const { name, category, description, stock, price, image, isActive } =
@@ -16,7 +16,7 @@ export const createProduct = async (req, res, next) => {
     );
   }
 
-  const newProduct = await db
+  const [newProduct] = await db
     .insert(products)
     .values({
       name,
@@ -44,7 +44,7 @@ export const getAllProducts = async (req, res, next) => {
   }
 
   return res.status(200).json({
-    allProducts,
+    products: allProducts,
   });
 };
 
@@ -83,7 +83,7 @@ export const updateProduct = async (req, res, next) => {
     return next(new ApiError(404, `Product with the id ${id} not found`));
   }
 
-  const updatedProduct = await db
+  const [updatedProduct] = await db
     .update(products)
     .set({
       name,
@@ -118,7 +118,7 @@ export const deleteProduct = async (req, res, next) => {
     return next(new ApiError(404, `Product with the id ${id} not found`));
   }
 
-  const deletedProduct = await db
+  const [deletedProduct] = await db
     .delete(products)
     .where(eq(products.id, Number(id)))
     .returning();

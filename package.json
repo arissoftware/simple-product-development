@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch src/server.js"
+    "dev": "NODE_EXTRA_CA_CERTS=./ca.pem node --watch src/server.js",
+    "db:push": "NODE_EXTRA_CA_CERTS=./ca.pem drizzle-kit push",
+    "db:generate": "NODE_EXTRA_CA_CERTS=./ca.pem drizzle-kit generate",
+    "db:studio": "NODE_EXTRA_CA_CERTS=./ca.pem drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
